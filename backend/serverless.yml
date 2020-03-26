@@ -209,11 +209,14 @@ resources:
         BucketName: ${self:provider.environment.IMAGES_BUCKET}
         CorsConfiguration:
           CorsRules:
-            - AllowedHeaders:
+            - AllowedOrigins:
+                - '*'
+              AllowedHeaders:
                 - '*'
               AllowedMethods:
                 - GET
-                - POST
                 - PUT
-              AllowedOrigins:
-                - '*'
+                - POST
+                - DELETE
+                - HEAD
+              MaxAge: 3000

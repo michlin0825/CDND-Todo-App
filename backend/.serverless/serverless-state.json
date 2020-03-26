@@ -211,7 +211,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/todos/dev/1585239505135-2020-03-26T16:18:25.135Z/Auth.zip"
+                "S3Key": "serverless/todos/dev/1585241449972-2020-03-26T16:50:49.972Z/Auth.zip"
               },
               "FunctionName": "todos-dev-Auth",
               "Handler": "src/lambda/auth/auth0Authorizer.handler",
@@ -258,7 +258,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/todos/dev/1585239505135-2020-03-26T16:18:25.135Z/GetTodos.zip"
+                "S3Key": "serverless/todos/dev/1585241449972-2020-03-26T16:50:49.972Z/GetTodos.zip"
               },
               "FunctionName": "todos-dev-GetTodos",
               "Handler": "src/lambda/http/getTodos.handler",
@@ -305,7 +305,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/todos/dev/1585239505135-2020-03-26T16:18:25.135Z/DeleteTodo.zip"
+                "S3Key": "serverless/todos/dev/1585241449972-2020-03-26T16:50:49.972Z/DeleteTodo.zip"
               },
               "FunctionName": "todos-dev-DeleteTodo",
               "Handler": "src/lambda/http/deleteTodo.handler",
@@ -352,7 +352,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/todos/dev/1585239505135-2020-03-26T16:18:25.135Z/CreateTodo.zip"
+                "S3Key": "serverless/todos/dev/1585241449972-2020-03-26T16:50:49.972Z/CreateTodo.zip"
               },
               "FunctionName": "todos-dev-CreateTodo",
               "Handler": "src/lambda/http/createTodo.handler",
@@ -399,7 +399,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/todos/dev/1585239505135-2020-03-26T16:18:25.135Z/UpdateTodo.zip"
+                "S3Key": "serverless/todos/dev/1585241449972-2020-03-26T16:50:49.972Z/UpdateTodo.zip"
               },
               "FunctionName": "todos-dev-UpdateTodo",
               "Handler": "src/lambda/http/updateTodo.handler",
@@ -446,7 +446,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/todos/dev/1585239505135-2020-03-26T16:18:25.135Z/GenerateUploadUrl.zip"
+                "S3Key": "serverless/todos/dev/1585241449972-2020-03-26T16:50:49.972Z/GenerateUploadUrl.zip"
               },
               "FunctionName": "todos-dev-GenerateUploadUrl",
               "Handler": "src/lambda/http/generateUploadUrl.handler",
@@ -958,7 +958,7 @@
               "Type": "TOKEN"
             }
           },
-          "ApiGatewayDeployment1585239457545": {
+          "ApiGatewayDeployment1585241399138": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -1654,7 +1654,7 @@
             "Type": "AWS::ApiGateway::GatewayResponse",
             "Properties": {
               "ResponseParameters": {
-                "gatewayresponse.header.Access-Control-Allow-Origin": "'*''",
+                "gatewayresponse.header.Access-Control-Allow-Origin": "'*'",
                 "gatewayresponse.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization'",
                 "gatewayresponse.header.Access-Control-Allow-Methods": "'GET,OPTIONS,POST'"
               },
@@ -2241,7 +2241,7 @@
           "Type": "AWS::ApiGateway::GatewayResponse",
           "Properties": {
             "ResponseParameters": {
-              "gatewayresponse.header.Access-Control-Allow-Origin": "'*''",
+              "gatewayresponse.header.Access-Control-Allow-Origin": "'*'",
               "gatewayresponse.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization'",
               "gatewayresponse.header.Access-Control-Allow-Methods": "'GET,OPTIONS,POST'"
             },
@@ -2320,7 +2320,7 @@
   },
   "package": {
     "individually": true,
-    "artifactDirectoryName": "serverless/todos/dev/1585239505135-2020-03-26T16:18:25.135Z",
+    "artifactDirectoryName": "serverless/todos/dev/1585241449972-2020-03-26T16:50:49.972Z",
     "artifact": ""
   }
 }
