@@ -95,6 +95,7 @@ functions:
           path: todos/{todoId}
           authorizer: Auth
           cors: true
+
     iamRoleStatements:
       - Effect: Allow
         Action:
@@ -135,6 +136,7 @@ functions:
             description: update a ToDo
             requestModels:
               'application/json': UpdateTodo
+
     iamRoleStatements:
       - Effect: Allow
         Action:
@@ -175,7 +177,7 @@ resources:
       Type: AWS::ApiGateway::GatewayResponse
       Properties:
         ResponseParameters:
-          gatewayresponse.header.Access-Control-Allow-Origin: "'*''"
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
           gatewayresponse.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization'"
           gatewayresponse.header.Access-Control-Allow-Methods: "'GET,OPTIONS,POST'"
         ResponseType: DEFAULT_4XX
