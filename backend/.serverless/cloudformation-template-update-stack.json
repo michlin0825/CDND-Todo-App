@@ -151,32 +151,6 @@
                 {
                   "Effect": "Allow",
                   "Action": [
-                    "dynamodb:Scan",
-                    "dynamodb:PutItem",
-                    "dynamodb:DeleteItem",
-                    "dynamodb:UpdateItem",
-                    "dynamodb:Query"
-                  ],
-                  "Resource": "arn:aws:dynamodb:us-east-1:*:table/Todos-dev"
-                },
-                {
-                  "Effect": "Allow",
-                  "Action": [
-                    "s3:PutObject",
-                    "s3:GetObject"
-                  ],
-                  "Resource": "arn:aws:s3:::michlin0825-udacity-todos-dev/*"
-                },
-                {
-                  "Effect": "Allow",
-                  "Action": [
-                    "dynamodb:Query"
-                  ],
-                  "Resource": "arn:aws:dynamodb:us-east-1:*:table/Todos-dev/index/userId"
-                },
-                {
-                  "Effect": "Allow",
-                  "Action": [
                     "xray:PutTraceSegments",
                     "xray:PutTelemetryRecords"
                   ],
@@ -210,7 +184,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/todos/dev/1585201598626-2020-03-26T05:46:38.626Z/Auth.zip"
+          "S3Key": "serverless/todos/dev/1585239505135-2020-03-26T16:18:25.135Z/Auth.zip"
         },
         "FunctionName": "todos-dev-Auth",
         "Handler": "src/lambda/auth/auth0Authorizer.handler",
@@ -240,14 +214,14 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "AuthLambdaVersionxIYOFl10gdFyH49yfHtFIpmnmwtjWNCXF0wWeX5k5U": {
+    "AuthLambdaVersionfLaeeIAlwnVA3RHRufktZ6Ktsr8RP4IsfQjatBXU": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "AuthLambdaFunction"
         },
-        "CodeSha256": "4h2ukFQuhH0jUOagwD2gcQ22ii9bS2T0OCtmeY/gC1c="
+        "CodeSha256": "qZDtATSP31puBnIbQi/ecxGn6NMIRoRvoe+PTkJt5I0="
       }
     },
     "GetTodosLambdaFunction": {
@@ -257,14 +231,14 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/todos/dev/1585201598626-2020-03-26T05:46:38.626Z/GetTodos.zip"
+          "S3Key": "serverless/todos/dev/1585239505135-2020-03-26T16:18:25.135Z/GetTodos.zip"
         },
         "FunctionName": "todos-dev-GetTodos",
         "Handler": "src/lambda/http/getTodos.handler",
         "MemorySize": 1024,
         "Role": {
           "Fn::GetAtt": [
-            "IamRoleLambdaExecution",
+            "GetTodosIamRoleLambdaExecution",
             "Arn"
           ]
         },
@@ -283,18 +257,18 @@
         }
       },
       "DependsOn": [
-        "GetTodosLogGroup",
-        "IamRoleLambdaExecution"
+        "GetTodosIamRoleLambdaExecution",
+        "GetTodosLogGroup"
       ]
     },
-    "GetTodosLambdaVersionGLvvaMWL4wfl81ByrLLYUYOmsxPsjguMEWu8BhDf94": {
+    "GetTodosLambdaVersionFyR8aCF3cLG7hPsQ2cU4WXrWcta498pKXHqhDHgLFP8": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "GetTodosLambdaFunction"
         },
-        "CodeSha256": "1oXhR+lXa6qkt8BUOyLTaNBNStIiU0j9kYtvKKtZNBg="
+        "CodeSha256": "JJw36qW8aFy7Nk9y8bhx4HL2pOo4bKwpoUFRTYF5Qeo="
       }
     },
     "DeleteTodoLambdaFunction": {
@@ -304,14 +278,14 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/todos/dev/1585201598626-2020-03-26T05:46:38.626Z/DeleteTodo.zip"
+          "S3Key": "serverless/todos/dev/1585239505135-2020-03-26T16:18:25.135Z/DeleteTodo.zip"
         },
         "FunctionName": "todos-dev-DeleteTodo",
         "Handler": "src/lambda/http/deleteTodo.handler",
         "MemorySize": 1024,
         "Role": {
           "Fn::GetAtt": [
-            "IamRoleLambdaExecution",
+            "DeleteTodoIamRoleLambdaExecution",
             "Arn"
           ]
         },
@@ -330,18 +304,18 @@
         }
       },
       "DependsOn": [
-        "DeleteTodoLogGroup",
-        "IamRoleLambdaExecution"
+        "DeleteTodoIamRoleLambdaExecution",
+        "DeleteTodoLogGroup"
       ]
     },
-    "DeleteTodoLambdaVersionDmPJ2k8Jijtqz2CGuwTFvuFD75wr1tFFbIrv9nCv4": {
+    "DeleteTodoLambdaVersionwQlY4pTQIiKDj3uzJKwtz96SCLvCFPoAOelWOe9VYts": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "DeleteTodoLambdaFunction"
         },
-        "CodeSha256": "EbtMYmRQjb+yIS0nIqUA2Kkr30Yq75PaFCGCHYN+JyA="
+        "CodeSha256": "3hOHIGyyOmiQKLYwpBETa8+/wzStwGlF5xYVrqfnv0U="
       }
     },
     "CreateTodoLambdaFunction": {
@@ -351,14 +325,14 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/todos/dev/1585201598626-2020-03-26T05:46:38.626Z/CreateTodo.zip"
+          "S3Key": "serverless/todos/dev/1585239505135-2020-03-26T16:18:25.135Z/CreateTodo.zip"
         },
         "FunctionName": "todos-dev-CreateTodo",
         "Handler": "src/lambda/http/createTodo.handler",
         "MemorySize": 1024,
         "Role": {
           "Fn::GetAtt": [
-            "IamRoleLambdaExecution",
+            "CreateTodoIamRoleLambdaExecution",
             "Arn"
           ]
         },
@@ -377,18 +351,18 @@
         }
       },
       "DependsOn": [
-        "CreateTodoLogGroup",
-        "IamRoleLambdaExecution"
+        "CreateTodoIamRoleLambdaExecution",
+        "CreateTodoLogGroup"
       ]
     },
-    "CreateTodoLambdaVersionZGaR5qt0VtHwn2tMXvV5a4hTasDszO3vIF9eOVH0": {
+    "CreateTodoLambdaVersion5koZMWQqJ5kkktSV6fMHEMDZDI7TOOe9Y2OTK6Z49w": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "CreateTodoLambdaFunction"
         },
-        "CodeSha256": "7aNKobyC2T60Rs9Wkq1GMGA68+jeLcNrX7DUIksyPrU="
+        "CodeSha256": "QaZmP+A1l43GqkOCPzPQIx9UP/6m5Vua3X+L3JoX2BA="
       }
     },
     "UpdateTodoLambdaFunction": {
@@ -398,14 +372,14 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/todos/dev/1585201598626-2020-03-26T05:46:38.626Z/UpdateTodo.zip"
+          "S3Key": "serverless/todos/dev/1585239505135-2020-03-26T16:18:25.135Z/UpdateTodo.zip"
         },
         "FunctionName": "todos-dev-UpdateTodo",
         "Handler": "src/lambda/http/updateTodo.handler",
         "MemorySize": 1024,
         "Role": {
           "Fn::GetAtt": [
-            "IamRoleLambdaExecution",
+            "UpdateTodoIamRoleLambdaExecution",
             "Arn"
           ]
         },
@@ -424,18 +398,18 @@
         }
       },
       "DependsOn": [
-        "UpdateTodoLogGroup",
-        "IamRoleLambdaExecution"
+        "UpdateTodoIamRoleLambdaExecution",
+        "UpdateTodoLogGroup"
       ]
     },
-    "UpdateTodoLambdaVersionnY1eBriiUZKED4j8hW42CLiilrVRNllzvXXYfDiYzVk": {
+    "UpdateTodoLambdaVersionvmgjzpzk3vftvVQmK3lDRcmqYIBEwpzw98XkmYVb7g": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "UpdateTodoLambdaFunction"
         },
-        "CodeSha256": "FSYu5lmRlHcaCoLIXB4QpDTPPh9gpUD4nZRcgS/aNIo="
+        "CodeSha256": "xOJ3qR9Ewxfy5ypUs8brIerD4WcmU3dyzTPqAT9Hj7c="
       }
     },
     "GenerateUploadUrlLambdaFunction": {
@@ -445,14 +419,14 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/todos/dev/1585201598626-2020-03-26T05:46:38.626Z/GenerateUploadUrl.zip"
+          "S3Key": "serverless/todos/dev/1585239505135-2020-03-26T16:18:25.135Z/GenerateUploadUrl.zip"
         },
         "FunctionName": "todos-dev-GenerateUploadUrl",
         "Handler": "src/lambda/http/generateUploadUrl.handler",
         "MemorySize": 1024,
         "Role": {
           "Fn::GetAtt": [
-            "IamRoleLambdaExecution",
+            "GenerateUploadUrlIamRoleLambdaExecution",
             "Arn"
           ]
         },
@@ -471,18 +445,18 @@
         }
       },
       "DependsOn": [
-        "GenerateUploadUrlLogGroup",
-        "IamRoleLambdaExecution"
+        "GenerateUploadUrlIamRoleLambdaExecution",
+        "GenerateUploadUrlLogGroup"
       ]
     },
-    "GenerateUploadUrlLambdaVersionHXfDXoy8MZpryaqgzTUQOFsh6tGPoeW58yVElkehc": {
+    "GenerateUploadUrlLambdaVersion3XCkmsQQmuYsJnQ03isrWL3DS1uyQG3Hw6UnGxQ": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "GenerateUploadUrlLambdaFunction"
         },
-        "CodeSha256": "u3kfug0Zmp4rrjfGMUuchgwRnFgaDmrqQsmbLUCbzdc="
+        "CodeSha256": "fWA741TG9/XqmXoRtkSranFuda5HmW99LudMAZbNBm0="
       }
     },
     "ApiGatewayRestApi": {
@@ -957,7 +931,7 @@
         "Type": "TOKEN"
       }
     },
-    "ApiGatewayDeployment1585201542797": {
+    "ApiGatewayDeployment1585239457545": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -1258,6 +1232,386 @@
         }
       }
     },
+    "GetTodosIamRoleLambdaExecution": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": [
+                  "lambda.amazonaws.com"
+                ]
+              },
+              "Action": [
+                "sts:AssumeRole"
+              ]
+            }
+          ]
+        },
+        "Policies": [
+          {
+            "PolicyName": {
+              "Fn::Join": [
+                "-",
+                [
+                  "todos-dev",
+                  "lambda"
+                ]
+              ]
+            },
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "logs:CreateLogStream",
+                    "logs:PutLogEvents"
+                  ],
+                  "Resource": [
+                    {
+                      "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/todos-dev-GetTodos:*:*"
+                    }
+                  ]
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "dynamodb:Query"
+                  ],
+                  "Resource": "arn:aws:dynamodb:us-east-1:*:table/Todos-dev"
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "dynamodb:Query"
+                  ],
+                  "Resource": "arn:aws:dynamodb:us-east-1:*:table/Todos-dev/index/userId"
+                }
+              ]
+            }
+          }
+        ],
+        "Path": "/",
+        "RoleName": {
+          "Fn::Join": [
+            "-",
+            [
+              "todos-dev",
+              {
+                "Ref": "AWS::Region"
+              },
+              "GetTodos",
+              "lambdaRole"
+            ]
+          ]
+        },
+        "ManagedPolicyArns": []
+      }
+    },
+    "DeleteTodoIamRoleLambdaExecution": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": [
+                  "lambda.amazonaws.com"
+                ]
+              },
+              "Action": [
+                "sts:AssumeRole"
+              ]
+            }
+          ]
+        },
+        "Policies": [
+          {
+            "PolicyName": {
+              "Fn::Join": [
+                "-",
+                [
+                  "todos-dev",
+                  "lambda"
+                ]
+              ]
+            },
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "logs:CreateLogStream",
+                    "logs:PutLogEvents"
+                  ],
+                  "Resource": [
+                    {
+                      "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/todos-dev-DeleteTodo:*:*"
+                    }
+                  ]
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "dynamodb:DeleteItem"
+                  ],
+                  "Resource": "arn:aws:dynamodb:us-east-1:*:table/Todos-dev"
+                }
+              ]
+            }
+          }
+        ],
+        "Path": "/",
+        "RoleName": {
+          "Fn::Join": [
+            "-",
+            [
+              "todos-dev",
+              {
+                "Ref": "AWS::Region"
+              },
+              "DeleteTodo",
+              "lambdaRole"
+            ]
+          ]
+        },
+        "ManagedPolicyArns": []
+      }
+    },
+    "CreateTodoIamRoleLambdaExecution": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": [
+                  "lambda.amazonaws.com"
+                ]
+              },
+              "Action": [
+                "sts:AssumeRole"
+              ]
+            }
+          ]
+        },
+        "Policies": [
+          {
+            "PolicyName": {
+              "Fn::Join": [
+                "-",
+                [
+                  "todos-dev",
+                  "lambda"
+                ]
+              ]
+            },
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "logs:CreateLogStream",
+                    "logs:PutLogEvents"
+                  ],
+                  "Resource": [
+                    {
+                      "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/todos-dev-CreateTodo:*:*"
+                    }
+                  ]
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "dynamodb:PutItem"
+                  ],
+                  "Resource": "arn:aws:dynamodb:us-east-1:*:table/Todos-dev"
+                }
+              ]
+            }
+          }
+        ],
+        "Path": "/",
+        "RoleName": {
+          "Fn::Join": [
+            "-",
+            [
+              "todos-dev",
+              {
+                "Ref": "AWS::Region"
+              },
+              "CreateTodo",
+              "lambdaRole"
+            ]
+          ]
+        },
+        "ManagedPolicyArns": []
+      }
+    },
+    "UpdateTodoIamRoleLambdaExecution": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": [
+                  "lambda.amazonaws.com"
+                ]
+              },
+              "Action": [
+                "sts:AssumeRole"
+              ]
+            }
+          ]
+        },
+        "Policies": [
+          {
+            "PolicyName": {
+              "Fn::Join": [
+                "-",
+                [
+                  "todos-dev",
+                  "lambda"
+                ]
+              ]
+            },
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "logs:CreateLogStream",
+                    "logs:PutLogEvents"
+                  ],
+                  "Resource": [
+                    {
+                      "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/todos-dev-UpdateTodo:*:*"
+                    }
+                  ]
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "dynamodb:UpdateItem"
+                  ],
+                  "Resource": "arn:aws:dynamodb:us-east-1:*:table/Todos-dev"
+                }
+              ]
+            }
+          }
+        ],
+        "Path": "/",
+        "RoleName": {
+          "Fn::Join": [
+            "-",
+            [
+              "todos-dev",
+              {
+                "Ref": "AWS::Region"
+              },
+              "UpdateTodo",
+              "lambdaRole"
+            ]
+          ]
+        },
+        "ManagedPolicyArns": []
+      }
+    },
+    "GenerateUploadUrlIamRoleLambdaExecution": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": [
+                  "lambda.amazonaws.com"
+                ]
+              },
+              "Action": [
+                "sts:AssumeRole"
+              ]
+            }
+          ]
+        },
+        "Policies": [
+          {
+            "PolicyName": {
+              "Fn::Join": [
+                "-",
+                [
+                  "todos-dev",
+                  "lambda"
+                ]
+              ]
+            },
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "logs:CreateLogStream",
+                    "logs:PutLogEvents"
+                  ],
+                  "Resource": [
+                    {
+                      "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/todos-dev-GenerateUploadUrl:*:*"
+                    }
+                  ]
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "dynamodb:UpdateItem"
+                  ],
+                  "Resource": "arn:aws:dynamodb:us-east-1:*:table/Todos-dev"
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "s3:PutObject",
+                    "s3:GetObject"
+                  ],
+                  "Resource": "arn:aws:s3:::michlin0825-udacity-todos-dev/*"
+                }
+              ]
+            }
+          }
+        ],
+        "Path": "/",
+        "RoleName": {
+          "Fn::Join": [
+            "-",
+            [
+              "todos-dev",
+              {
+                "Ref": "AWS::Region"
+              },
+              "GenerateUploadUrl",
+              "lambdaRole"
+            ]
+          ]
+        },
+        "ManagedPolicyArns": []
+      }
+    },
     "RequestBodyValidator": {
       "Type": "AWS::ApiGateway::RequestValidator",
       "Properties": {
@@ -1353,37 +1707,37 @@
     "AuthLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "AuthLambdaVersionxIYOFl10gdFyH49yfHtFIpmnmwtjWNCXF0wWeX5k5U"
+        "Ref": "AuthLambdaVersionfLaeeIAlwnVA3RHRufktZ6Ktsr8RP4IsfQjatBXU"
       }
     },
     "GetTodosLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "GetTodosLambdaVersionGLvvaMWL4wfl81ByrLLYUYOmsxPsjguMEWu8BhDf94"
+        "Ref": "GetTodosLambdaVersionFyR8aCF3cLG7hPsQ2cU4WXrWcta498pKXHqhDHgLFP8"
       }
     },
     "DeleteTodoLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "DeleteTodoLambdaVersionDmPJ2k8Jijtqz2CGuwTFvuFD75wr1tFFbIrv9nCv4"
+        "Ref": "DeleteTodoLambdaVersionwQlY4pTQIiKDj3uzJKwtz96SCLvCFPoAOelWOe9VYts"
       }
     },
     "CreateTodoLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "CreateTodoLambdaVersionZGaR5qt0VtHwn2tMXvV5a4hTasDszO3vIF9eOVH0"
+        "Ref": "CreateTodoLambdaVersion5koZMWQqJ5kkktSV6fMHEMDZDI7TOOe9Y2OTK6Z49w"
       }
     },
     "UpdateTodoLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "UpdateTodoLambdaVersionnY1eBriiUZKED4j8hW42CLiilrVRNllzvXXYfDiYzVk"
+        "Ref": "UpdateTodoLambdaVersionvmgjzpzk3vftvVQmK3lDRcmqYIBEwpzw98XkmYVb7g"
       }
     },
     "GenerateUploadUrlLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "GenerateUploadUrlLambdaVersionHXfDXoy8MZpryaqgzTUQOFsh6tGPoeW58yVElkehc"
+        "Ref": "GenerateUploadUrlLambdaVersion3XCkmsQQmuYsJnQ03isrWL3DS1uyQG3Hw6UnGxQ"
       }
     },
     "ServiceEndpoint": {
