@@ -1,28 +1,21 @@
 {
   "service": {
-    "service": "todos",
+    "service": "serverless-todo-app",
     "serviceObject": {
-      "name": "todos"
+      "name": "serverless-todo-app"
     },
     "provider": {
       "stage": "dev",
       "variableSyntax": "\\${([^{}]+?)}",
       "name": "aws",
       "runtime": "nodejs12.x",
-      "apiGateway": {
-        "minimumCompressionSize": 1024
-      },
-      "environment": {
-        "AWS_NODEJS_CONNECTION_REUSE_ENABLED": 1,
-        "TODO_TABLE": "Todos-dev",
-        "IMAGES_BUCKET": "michlin0825-udacity-todos-dev",
-        "USER_ID_INDEX": "userId"
-      },
-      "tracing": {
-        "lambda": true,
-        "apiGateway": true
-      },
       "region": "us-east-1",
+      "environment": {
+        "TODOS_TABLE": "michlin0825-sls-todos-dev",
+        "INDEX_NAME": "UserIdIndex",
+        "S3_BUCKET": "michlin0825-sls-todos-dev",
+        "SIGNED_URL_EXPIRATION": 300
+      },
       "versionFunctions": true,
       "remoteFunctionData": null,
       "compiledCloudFormationTemplate": {
@@ -86,37 +79,37 @@
           "AuthLogGroup": {
             "Type": "AWS::Logs::LogGroup",
             "Properties": {
-              "LogGroupName": "/aws/lambda/todos-dev-Auth"
+              "LogGroupName": "/aws/lambda/serverless-todo-app-dev-Auth"
             }
           },
           "GetTodosLogGroup": {
             "Type": "AWS::Logs::LogGroup",
             "Properties": {
-              "LogGroupName": "/aws/lambda/todos-dev-GetTodos"
-            }
-          },
-          "DeleteTodoLogGroup": {
-            "Type": "AWS::Logs::LogGroup",
-            "Properties": {
-              "LogGroupName": "/aws/lambda/todos-dev-DeleteTodo"
+              "LogGroupName": "/aws/lambda/serverless-todo-app-dev-GetTodos"
             }
           },
           "CreateTodoLogGroup": {
             "Type": "AWS::Logs::LogGroup",
             "Properties": {
-              "LogGroupName": "/aws/lambda/todos-dev-CreateTodo"
+              "LogGroupName": "/aws/lambda/serverless-todo-app-dev-CreateTodo"
             }
           },
           "UpdateTodoLogGroup": {
             "Type": "AWS::Logs::LogGroup",
             "Properties": {
-              "LogGroupName": "/aws/lambda/todos-dev-UpdateTodo"
+              "LogGroupName": "/aws/lambda/serverless-todo-app-dev-UpdateTodo"
+            }
+          },
+          "DeleteTodoLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+              "LogGroupName": "/aws/lambda/serverless-todo-app-dev-DeleteTodo"
             }
           },
           "GenerateUploadUrlLogGroup": {
             "Type": "AWS::Logs::LogGroup",
             "Properties": {
-              "LogGroupName": "/aws/lambda/todos-dev-GenerateUploadUrl"
+              "LogGroupName": "/aws/lambda/serverless-todo-app-dev-GenerateUploadUrl"
             }
           },
           "IamRoleLambdaExecution": {
@@ -144,7 +137,7 @@
                     "Fn::Join": [
                       "-",
                       [
-                        "todos-dev",
+                        "serverless-todo-app-dev",
                         "lambda"
                       ]
                     ]
@@ -160,7 +153,7 @@
                         ],
                         "Resource": [
                           {
-                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/todos-dev*:*"
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/serverless-todo-app-dev*:*"
                           }
                         ]
                       },
@@ -171,18 +164,8 @@
                         ],
                         "Resource": [
                           {
-                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/todos-dev*:*:*"
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/serverless-todo-app-dev*:*:*"
                           }
-                        ]
-                      },
-                      {
-                        "Effect": "Allow",
-                        "Action": [
-                          "xray:PutTraceSegments",
-                          "xray:PutTelemetryRecords"
-                        ],
-                        "Resource": [
-                          "*"
                         ]
                       }
                     ]
@@ -194,7 +177,7 @@
                 "Fn::Join": [
                   "-",
                   [
-                    "todos-dev",
+                    "serverless-todo-app-dev",
                     {
                       "Ref": "AWS::Region"
                     },
@@ -211,9 +194,9 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/todos/dev/1585241449972-2020-03-26T16:50:49.972Z/Auth.zip"
+                "S3Key": "serverless/serverless-todo-app/dev/1585277703531-2020-03-27T02:55:03.531Z/serverless-todo-app.zip"
               },
-              "FunctionName": "todos-dev-Auth",
+              "FunctionName": "serverless-todo-app-dev-Auth",
               "Handler": "src/lambda/auth/auth0Authorizer.handler",
               "MemorySize": 1024,
               "Role": {
@@ -224,15 +207,12 @@
               },
               "Runtime": "nodejs12.x",
               "Timeout": 6,
-              "TracingConfig": {
-                "Mode": "Active"
-              },
               "Environment": {
                 "Variables": {
-                  "AWS_NODEJS_CONNECTION_REUSE_ENABLED": 1,
-                  "TODO_TABLE": "Todos-dev",
-                  "IMAGES_BUCKET": "michlin0825-udacity-todos-dev",
-                  "USER_ID_INDEX": "userId"
+                  "TODOS_TABLE": "michlin0825-sls-todos-dev",
+                  "INDEX_NAME": "UserIdIndex",
+                  "S3_BUCKET": "michlin0825-sls-todos-dev",
+                  "SIGNED_URL_EXPIRATION": 300
                 }
               }
             },
@@ -241,14 +221,14 @@
               "IamRoleLambdaExecution"
             ]
           },
-          "AuthLambdaVersionfLaeeIAlwnVA3RHRufktZ6Ktsr8RP4IsfQjatBXU": {
+          "AuthLambdaVersionpyB1jV1MD6hgWmu2r1viLFu4oRGReWeey2j2FjRIDbQ": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "AuthLambdaFunction"
               },
-              "CodeSha256": "qZDtATSP31puBnIbQi/ecxGn6NMIRoRvoe+PTkJt5I0="
+              "CodeSha256": "+dtEbISmp5svmW23SvVrz+rjfpiH8540eJLZs2cG1QM="
             }
           },
           "GetTodosLambdaFunction": {
@@ -258,9 +238,9 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/todos/dev/1585241449972-2020-03-26T16:50:49.972Z/GetTodos.zip"
+                "S3Key": "serverless/serverless-todo-app/dev/1585277703531-2020-03-27T02:55:03.531Z/serverless-todo-app.zip"
               },
-              "FunctionName": "todos-dev-GetTodos",
+              "FunctionName": "serverless-todo-app-dev-GetTodos",
               "Handler": "src/lambda/http/getTodos.handler",
               "MemorySize": 1024,
               "Role": {
@@ -271,15 +251,12 @@
               },
               "Runtime": "nodejs12.x",
               "Timeout": 6,
-              "TracingConfig": {
-                "Mode": "Active"
-              },
               "Environment": {
                 "Variables": {
-                  "AWS_NODEJS_CONNECTION_REUSE_ENABLED": 1,
-                  "TODO_TABLE": "Todos-dev",
-                  "IMAGES_BUCKET": "michlin0825-udacity-todos-dev",
-                  "USER_ID_INDEX": "userId"
+                  "TODOS_TABLE": "michlin0825-sls-todos-dev",
+                  "INDEX_NAME": "UserIdIndex",
+                  "S3_BUCKET": "michlin0825-sls-todos-dev",
+                  "SIGNED_URL_EXPIRATION": 300
                 }
               }
             },
@@ -288,61 +265,14 @@
               "GetTodosLogGroup"
             ]
           },
-          "GetTodosLambdaVersionFyR8aCF3cLG7hPsQ2cU4WXrWcta498pKXHqhDHgLFP8": {
+          "GetTodosLambdaVersionV1HCCtrmwb3FnCcVKNdJDGl9JinoLHjkxp6C0SSUhw": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "GetTodosLambdaFunction"
               },
-              "CodeSha256": "JJw36qW8aFy7Nk9y8bhx4HL2pOo4bKwpoUFRTYF5Qeo="
-            }
-          },
-          "DeleteTodoLambdaFunction": {
-            "Type": "AWS::Lambda::Function",
-            "Properties": {
-              "Code": {
-                "S3Bucket": {
-                  "Ref": "ServerlessDeploymentBucket"
-                },
-                "S3Key": "serverless/todos/dev/1585241449972-2020-03-26T16:50:49.972Z/DeleteTodo.zip"
-              },
-              "FunctionName": "todos-dev-DeleteTodo",
-              "Handler": "src/lambda/http/deleteTodo.handler",
-              "MemorySize": 1024,
-              "Role": {
-                "Fn::GetAtt": [
-                  "DeleteTodoIamRoleLambdaExecution",
-                  "Arn"
-                ]
-              },
-              "Runtime": "nodejs12.x",
-              "Timeout": 6,
-              "TracingConfig": {
-                "Mode": "Active"
-              },
-              "Environment": {
-                "Variables": {
-                  "AWS_NODEJS_CONNECTION_REUSE_ENABLED": 1,
-                  "TODO_TABLE": "Todos-dev",
-                  "IMAGES_BUCKET": "michlin0825-udacity-todos-dev",
-                  "USER_ID_INDEX": "userId"
-                }
-              }
-            },
-            "DependsOn": [
-              "DeleteTodoIamRoleLambdaExecution",
-              "DeleteTodoLogGroup"
-            ]
-          },
-          "DeleteTodoLambdaVersionwQlY4pTQIiKDj3uzJKwtz96SCLvCFPoAOelWOe9VYts": {
-            "Type": "AWS::Lambda::Version",
-            "DeletionPolicy": "Retain",
-            "Properties": {
-              "FunctionName": {
-                "Ref": "DeleteTodoLambdaFunction"
-              },
-              "CodeSha256": "3hOHIGyyOmiQKLYwpBETa8+/wzStwGlF5xYVrqfnv0U="
+              "CodeSha256": "+dtEbISmp5svmW23SvVrz+rjfpiH8540eJLZs2cG1QM="
             }
           },
           "CreateTodoLambdaFunction": {
@@ -352,9 +282,9 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/todos/dev/1585241449972-2020-03-26T16:50:49.972Z/CreateTodo.zip"
+                "S3Key": "serverless/serverless-todo-app/dev/1585277703531-2020-03-27T02:55:03.531Z/serverless-todo-app.zip"
               },
-              "FunctionName": "todos-dev-CreateTodo",
+              "FunctionName": "serverless-todo-app-dev-CreateTodo",
               "Handler": "src/lambda/http/createTodo.handler",
               "MemorySize": 1024,
               "Role": {
@@ -365,15 +295,12 @@
               },
               "Runtime": "nodejs12.x",
               "Timeout": 6,
-              "TracingConfig": {
-                "Mode": "Active"
-              },
               "Environment": {
                 "Variables": {
-                  "AWS_NODEJS_CONNECTION_REUSE_ENABLED": 1,
-                  "TODO_TABLE": "Todos-dev",
-                  "IMAGES_BUCKET": "michlin0825-udacity-todos-dev",
-                  "USER_ID_INDEX": "userId"
+                  "TODOS_TABLE": "michlin0825-sls-todos-dev",
+                  "INDEX_NAME": "UserIdIndex",
+                  "S3_BUCKET": "michlin0825-sls-todos-dev",
+                  "SIGNED_URL_EXPIRATION": 300
                 }
               }
             },
@@ -382,14 +309,14 @@
               "CreateTodoLogGroup"
             ]
           },
-          "CreateTodoLambdaVersion5koZMWQqJ5kkktSV6fMHEMDZDI7TOOe9Y2OTK6Z49w": {
+          "CreateTodoLambdaVersionEMdC0nw28uFZL4HFv3zmuCkM8hQ6CJWwSSCZQe0": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "CreateTodoLambdaFunction"
               },
-              "CodeSha256": "QaZmP+A1l43GqkOCPzPQIx9UP/6m5Vua3X+L3JoX2BA="
+              "CodeSha256": "+dtEbISmp5svmW23SvVrz+rjfpiH8540eJLZs2cG1QM="
             }
           },
           "UpdateTodoLambdaFunction": {
@@ -399,9 +326,9 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/todos/dev/1585241449972-2020-03-26T16:50:49.972Z/UpdateTodo.zip"
+                "S3Key": "serverless/serverless-todo-app/dev/1585277703531-2020-03-27T02:55:03.531Z/serverless-todo-app.zip"
               },
-              "FunctionName": "todos-dev-UpdateTodo",
+              "FunctionName": "serverless-todo-app-dev-UpdateTodo",
               "Handler": "src/lambda/http/updateTodo.handler",
               "MemorySize": 1024,
               "Role": {
@@ -412,15 +339,12 @@
               },
               "Runtime": "nodejs12.x",
               "Timeout": 6,
-              "TracingConfig": {
-                "Mode": "Active"
-              },
               "Environment": {
                 "Variables": {
-                  "AWS_NODEJS_CONNECTION_REUSE_ENABLED": 1,
-                  "TODO_TABLE": "Todos-dev",
-                  "IMAGES_BUCKET": "michlin0825-udacity-todos-dev",
-                  "USER_ID_INDEX": "userId"
+                  "TODOS_TABLE": "michlin0825-sls-todos-dev",
+                  "INDEX_NAME": "UserIdIndex",
+                  "S3_BUCKET": "michlin0825-sls-todos-dev",
+                  "SIGNED_URL_EXPIRATION": 300
                 }
               }
             },
@@ -429,14 +353,58 @@
               "UpdateTodoLogGroup"
             ]
           },
-          "UpdateTodoLambdaVersionvmgjzpzk3vftvVQmK3lDRcmqYIBEwpzw98XkmYVb7g": {
+          "UpdateTodoLambdaVersionKRtfpj1Q1s29otabi4DNZ7JVsJjMxHQUm4kE6Oacz8": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "UpdateTodoLambdaFunction"
               },
-              "CodeSha256": "xOJ3qR9Ewxfy5ypUs8brIerD4WcmU3dyzTPqAT9Hj7c="
+              "CodeSha256": "+dtEbISmp5svmW23SvVrz+rjfpiH8540eJLZs2cG1QM="
+            }
+          },
+          "DeleteTodoLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+              "Code": {
+                "S3Bucket": {
+                  "Ref": "ServerlessDeploymentBucket"
+                },
+                "S3Key": "serverless/serverless-todo-app/dev/1585277703531-2020-03-27T02:55:03.531Z/serverless-todo-app.zip"
+              },
+              "FunctionName": "serverless-todo-app-dev-DeleteTodo",
+              "Handler": "src/lambda/http/deleteTodo.handler",
+              "MemorySize": 1024,
+              "Role": {
+                "Fn::GetAtt": [
+                  "DeleteTodoIamRoleLambdaExecution",
+                  "Arn"
+                ]
+              },
+              "Runtime": "nodejs12.x",
+              "Timeout": 6,
+              "Environment": {
+                "Variables": {
+                  "TODOS_TABLE": "michlin0825-sls-todos-dev",
+                  "INDEX_NAME": "UserIdIndex",
+                  "S3_BUCKET": "michlin0825-sls-todos-dev",
+                  "SIGNED_URL_EXPIRATION": 300
+                }
+              }
+            },
+            "DependsOn": [
+              "DeleteTodoIamRoleLambdaExecution",
+              "DeleteTodoLogGroup"
+            ]
+          },
+          "DeleteTodoLambdaVersion4pGpolQiWUt4Y01sPnTycrvUtaZeLD8x40H72yaxp8": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "DeleteTodoLambdaFunction"
+              },
+              "CodeSha256": "+dtEbISmp5svmW23SvVrz+rjfpiH8540eJLZs2cG1QM="
             }
           },
           "GenerateUploadUrlLambdaFunction": {
@@ -446,9 +414,9 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/todos/dev/1585241449972-2020-03-26T16:50:49.972Z/GenerateUploadUrl.zip"
+                "S3Key": "serverless/serverless-todo-app/dev/1585277703531-2020-03-27T02:55:03.531Z/serverless-todo-app.zip"
               },
-              "FunctionName": "todos-dev-GenerateUploadUrl",
+              "FunctionName": "serverless-todo-app-dev-GenerateUploadUrl",
               "Handler": "src/lambda/http/generateUploadUrl.handler",
               "MemorySize": 1024,
               "Role": {
@@ -459,15 +427,12 @@
               },
               "Runtime": "nodejs12.x",
               "Timeout": 6,
-              "TracingConfig": {
-                "Mode": "Active"
-              },
               "Environment": {
                 "Variables": {
-                  "AWS_NODEJS_CONNECTION_REUSE_ENABLED": 1,
-                  "TODO_TABLE": "Todos-dev",
-                  "IMAGES_BUCKET": "michlin0825-udacity-todos-dev",
-                  "USER_ID_INDEX": "userId"
+                  "TODOS_TABLE": "michlin0825-sls-todos-dev",
+                  "INDEX_NAME": "UserIdIndex",
+                  "S3_BUCKET": "michlin0825-sls-todos-dev",
+                  "SIGNED_URL_EXPIRATION": 300
                 }
               }
             },
@@ -476,27 +441,26 @@
               "GenerateUploadUrlLogGroup"
             ]
           },
-          "GenerateUploadUrlLambdaVersion3XCkmsQQmuYsJnQ03isrWL3DS1uyQG3Hw6UnGxQ": {
+          "GenerateUploadUrlLambdaVersion8OKzQC5cjdFMoOJkXL4adzet42ztNrYp8fvKVMaID2Y": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "GenerateUploadUrlLambdaFunction"
               },
-              "CodeSha256": "fWA741TG9/XqmXoRtkSranFuda5HmW99LudMAZbNBm0="
+              "CodeSha256": "+dtEbISmp5svmW23SvVrz+rjfpiH8540eJLZs2cG1QM="
             }
           },
           "ApiGatewayRestApi": {
             "Type": "AWS::ApiGateway::RestApi",
             "Properties": {
-              "Name": "dev-todos",
+              "Name": "dev-serverless-todo-app",
               "EndpointConfiguration": {
                 "Types": [
                   "EDGE"
                 ]
               },
-              "Policy": "",
-              "MinimumCompressionSize": 1024
+              "Policy": ""
             }
           },
           "ApiGatewayResourceTodos": {
@@ -612,7 +576,7 @@
                     "ResponseParameters": {
                       "method.response.header.Access-Control-Allow-Origin": "'*'",
                       "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
-                      "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,PATCH,DELETE'"
+                      "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,DELETE,PATCH'"
                     },
                     "ResponseTemplates": {
                       "application/json": "#set($origin = $input.params(\"Origin\"))\n#if($origin == \"\") #set($origin = $input.params(\"origin\")) #end\n#if($origin.matches(\".*\")) #set($context.responseOverride.header.Access-Control-Allow-Origin = $origin) #end"
@@ -720,6 +684,103 @@
             },
             "DependsOn": "AuthApiGatewayAuthorizer"
           },
+          "ApiGatewayMethodTodosPost": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "HttpMethod": "POST",
+              "RequestParameters": {},
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceTodos"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "ApiKeyRequired": false,
+              "AuthorizationType": "CUSTOM",
+              "AuthorizerId": {
+                "Ref": "AuthApiGatewayAuthorizer"
+              },
+              "Integration": {
+                "IntegrationHttpMethod": "POST",
+                "Type": "AWS_PROXY",
+                "Uri": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":apigateway:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":lambda:path/2015-03-31/functions/",
+                      {
+                        "Fn::GetAtt": [
+                          "CreateTodoLambdaFunction",
+                          "Arn"
+                        ]
+                      },
+                      "/invocations"
+                    ]
+                  ]
+                }
+              },
+              "MethodResponses": [],
+              "RequestValidatorId": {
+                "Ref": "RequestBodyValidator"
+              }
+            },
+            "DependsOn": "AuthApiGatewayAuthorizer"
+          },
+          "ApiGatewayMethodTodosTodoidVarPatch": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "HttpMethod": "PATCH",
+              "RequestParameters": {},
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceTodosTodoidVar"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "ApiKeyRequired": false,
+              "AuthorizationType": "CUSTOM",
+              "AuthorizerId": {
+                "Ref": "AuthApiGatewayAuthorizer"
+              },
+              "Integration": {
+                "IntegrationHttpMethod": "POST",
+                "Type": "AWS_PROXY",
+                "Uri": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":apigateway:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":lambda:path/2015-03-31/functions/",
+                      {
+                        "Fn::GetAtt": [
+                          "UpdateTodoLambdaFunction",
+                          "Arn"
+                        ]
+                      },
+                      "/invocations"
+                    ]
+                  ]
+                }
+              },
+              "MethodResponses": []
+            },
+            "DependsOn": "AuthApiGatewayAuthorizer"
+          },
           "ApiGatewayMethodTodosTodoidVarDelete": {
             "Type": "AWS::ApiGateway::Method",
             "Properties": {
@@ -766,116 +827,6 @@
               "MethodResponses": []
             },
             "DependsOn": "AuthApiGatewayAuthorizer"
-          },
-          "ApiGatewayMethodTodosPost": {
-            "Type": "AWS::ApiGateway::Method",
-            "Properties": {
-              "HttpMethod": "POST",
-              "RequestParameters": {},
-              "ResourceId": {
-                "Ref": "ApiGatewayResourceTodos"
-              },
-              "RestApiId": {
-                "Ref": "ApiGatewayRestApi"
-              },
-              "ApiKeyRequired": false,
-              "AuthorizationType": "CUSTOM",
-              "AuthorizerId": {
-                "Ref": "AuthApiGatewayAuthorizer"
-              },
-              "Integration": {
-                "IntegrationHttpMethod": "POST",
-                "Type": "AWS_PROXY",
-                "Uri": {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:",
-                      {
-                        "Ref": "AWS::Partition"
-                      },
-                      ":apigateway:",
-                      {
-                        "Ref": "AWS::Region"
-                      },
-                      ":lambda:path/2015-03-31/functions/",
-                      {
-                        "Fn::GetAtt": [
-                          "CreateTodoLambdaFunction",
-                          "Arn"
-                        ]
-                      },
-                      "/invocations"
-                    ]
-                  ]
-                }
-              },
-              "MethodResponses": [],
-              "RequestModels": {
-                "application/json": "CreateTodo"
-              },
-              "RequestValidatorId": {
-                "Ref": "RequestBodyValidator"
-              }
-            },
-            "DependsOn": [
-              "CreateTodoModel"
-            ]
-          },
-          "ApiGatewayMethodTodosTodoidVarPatch": {
-            "Type": "AWS::ApiGateway::Method",
-            "Properties": {
-              "HttpMethod": "PATCH",
-              "RequestParameters": {},
-              "ResourceId": {
-                "Ref": "ApiGatewayResourceTodosTodoidVar"
-              },
-              "RestApiId": {
-                "Ref": "ApiGatewayRestApi"
-              },
-              "ApiKeyRequired": false,
-              "AuthorizationType": "CUSTOM",
-              "AuthorizerId": {
-                "Ref": "AuthApiGatewayAuthorizer"
-              },
-              "Integration": {
-                "IntegrationHttpMethod": "POST",
-                "Type": "AWS_PROXY",
-                "Uri": {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:",
-                      {
-                        "Ref": "AWS::Partition"
-                      },
-                      ":apigateway:",
-                      {
-                        "Ref": "AWS::Region"
-                      },
-                      ":lambda:path/2015-03-31/functions/",
-                      {
-                        "Fn::GetAtt": [
-                          "UpdateTodoLambdaFunction",
-                          "Arn"
-                        ]
-                      },
-                      "/invocations"
-                    ]
-                  ]
-                }
-              },
-              "MethodResponses": [],
-              "RequestModels": {
-                "application/json": "UpdateTodo"
-              },
-              "RequestValidatorId": {
-                "Ref": "RequestBodyValidator"
-              }
-            },
-            "DependsOn": [
-              "UpdateTodoModel"
-            ]
           },
           "ApiGatewayMethodTodosTodoidVarAttachmentPost": {
             "Type": "AWS::ApiGateway::Method",
@@ -958,7 +909,7 @@
               "Type": "TOKEN"
             }
           },
-          "ApiGatewayDeployment1585241399138": {
+          "ApiGatewayDeployment1585277608775": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -971,9 +922,9 @@
               "ApiGatewayMethodTodosTodoidVarOptions",
               "ApiGatewayMethodTodosTodoidVarAttachmentOptions",
               "ApiGatewayMethodTodosGet",
-              "ApiGatewayMethodTodosTodoidVarDelete",
               "ApiGatewayMethodTodosPost",
               "ApiGatewayMethodTodosTodoidVarPatch",
+              "ApiGatewayMethodTodosTodoidVarDelete",
               "ApiGatewayMethodTodosTodoidVarAttachmentPost"
             ]
           },
@@ -1020,43 +971,6 @@
               "FunctionName": {
                 "Fn::GetAtt": [
                   "AuthLambdaFunction",
-                  "Arn"
-                ]
-              },
-              "Action": "lambda:InvokeFunction",
-              "Principal": "apigateway.amazonaws.com",
-              "SourceArn": {
-                "Fn::Join": [
-                  "",
-                  [
-                    "arn:",
-                    {
-                      "Ref": "AWS::Partition"
-                    },
-                    ":execute-api:",
-                    {
-                      "Ref": "AWS::Region"
-                    },
-                    ":",
-                    {
-                      "Ref": "AWS::AccountId"
-                    },
-                    ":",
-                    {
-                      "Ref": "ApiGatewayRestApi"
-                    },
-                    "/*/*"
-                  ]
-                ]
-              }
-            }
-          },
-          "DeleteTodoLambdaPermissionApiGateway": {
-            "Type": "AWS::Lambda::Permission",
-            "Properties": {
-              "FunctionName": {
-                "Fn::GetAtt": [
-                  "DeleteTodoLambdaFunction",
                   "Arn"
                 ]
               },
@@ -1162,6 +1076,43 @@
               }
             }
           },
+          "DeleteTodoLambdaPermissionApiGateway": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "FunctionName": {
+                "Fn::GetAtt": [
+                  "DeleteTodoLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "Action": "lambda:InvokeFunction",
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "ApiGatewayRestApi"
+                    },
+                    "/*/*"
+                  ]
+                ]
+              }
+            }
+          },
           "GenerateUploadUrlLambdaPermissionApiGateway": {
             "Type": "AWS::Lambda::Permission",
             "Properties": {
@@ -1199,66 +1150,6 @@
               }
             }
           },
-          "CreateTodoModel": {
-            "Type": "AWS::ApiGateway::Model",
-            "Properties": {
-              "RestApiId": {
-                "Ref": "ApiGatewayRestApi"
-              },
-              "ContentType": "application/json",
-              "Name": "CreateTodo",
-              "Schema": {
-                "$schema": "http://json-schema.org/draft-04/schema#",
-                "title": "create-todo",
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string"
-                  },
-                  "dueDate": {
-                    "type": "string"
-                  }
-                },
-                "required": [
-                  "name",
-                  "dueDate"
-                ],
-                "additionalProperties": false
-              }
-            }
-          },
-          "UpdateTodoModel": {
-            "Type": "AWS::ApiGateway::Model",
-            "Properties": {
-              "RestApiId": {
-                "$ref": "$[\"service\"][\"provider\"][\"compiledCloudFormationTemplate\"][\"Resources\"][\"CreateTodoModel\"][\"Properties\"][\"RestApiId\"]"
-              },
-              "ContentType": "application/json",
-              "Name": "UpdateTodo",
-              "Schema": {
-                "$schema": "http://json-schema.org/draft-04/schema#",
-                "title": "update-todo",
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string"
-                  },
-                  "dueDate": {
-                    "type": "string"
-                  },
-                  "done": {
-                    "type": "boolean"
-                  }
-                },
-                "required": [
-                  "name",
-                  "dueDate",
-                  "done"
-                ],
-                "additionalProperties": false
-              }
-            }
-          },
           "GetTodosIamRoleLambdaExecution": {
             "Type": "AWS::IAM::Role",
             "Properties": {
@@ -1284,7 +1175,7 @@
                     "Fn::Join": [
                       "-",
                       [
-                        "todos-dev",
+                        "serverless-todo-app-dev",
                         "lambda"
                       ]
                     ]
@@ -1300,23 +1191,25 @@
                         ],
                         "Resource": [
                           {
-                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/todos-dev-GetTodos:*:*"
+                            "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/serverless-todo-app-dev-GetTodos:*:*"
                           }
                         ]
                       },
                       {
                         "Effect": "Allow",
                         "Action": [
-                          "dynamodb:Query"
+                          "dynamodb:Query",
+                          "dynamodb:Scan"
                         ],
-                        "Resource": "arn:aws:dynamodb:us-east-1:*:table/Todos-dev"
+                        "Resource": "arn:aws:dynamodb:us-east-1:*:table/michlin0825-sls-todos-dev"
                       },
                       {
                         "Effect": "Allow",
                         "Action": [
-                          "dynamodb:Query"
+                          "dynamodb:Query",
+                          "dynamodb:Scan"
                         ],
-                        "Resource": "arn:aws:dynamodb:us-east-1:*:table/Todos-dev/index/userId"
+                        "Resource": "arn:aws:dynamodb:us-east-1:*:table/michlin0825-sls-todos-dev/index/UserIdIndex"
                       }
                     ]
                   }
@@ -1327,84 +1220,11 @@
                 "Fn::Join": [
                   "-",
                   [
-                    "todos-dev",
+                    "serverless-todo-app-dev",
                     {
                       "Ref": "AWS::Region"
                     },
                     "GetTodos",
-                    "lambdaRole"
-                  ]
-                ]
-              },
-              "ManagedPolicyArns": []
-            }
-          },
-          "DeleteTodoIamRoleLambdaExecution": {
-            "Type": "AWS::IAM::Role",
-            "Properties": {
-              "AssumeRolePolicyDocument": {
-                "Version": "2012-10-17",
-                "Statement": [
-                  {
-                    "Effect": "Allow",
-                    "Principal": {
-                      "Service": [
-                        "lambda.amazonaws.com"
-                      ]
-                    },
-                    "Action": [
-                      "sts:AssumeRole"
-                    ]
-                  }
-                ]
-              },
-              "Policies": [
-                {
-                  "PolicyName": {
-                    "Fn::Join": [
-                      "-",
-                      [
-                        "todos-dev",
-                        "lambda"
-                      ]
-                    ]
-                  },
-                  "PolicyDocument": {
-                    "Version": "2012-10-17",
-                    "Statement": [
-                      {
-                        "Effect": "Allow",
-                        "Action": [
-                          "logs:CreateLogStream",
-                          "logs:PutLogEvents"
-                        ],
-                        "Resource": [
-                          {
-                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/todos-dev-DeleteTodo:*:*"
-                          }
-                        ]
-                      },
-                      {
-                        "Effect": "Allow",
-                        "Action": [
-                          "dynamodb:DeleteItem"
-                        ],
-                        "Resource": "arn:aws:dynamodb:us-east-1:*:table/Todos-dev"
-                      }
-                    ]
-                  }
-                }
-              ],
-              "Path": "/",
-              "RoleName": {
-                "Fn::Join": [
-                  "-",
-                  [
-                    "todos-dev",
-                    {
-                      "Ref": "AWS::Region"
-                    },
-                    "DeleteTodo",
                     "lambdaRole"
                   ]
                 ]
@@ -1437,7 +1257,7 @@
                     "Fn::Join": [
                       "-",
                       [
-                        "todos-dev",
+                        "serverless-todo-app-dev",
                         "lambda"
                       ]
                     ]
@@ -1453,7 +1273,7 @@
                         ],
                         "Resource": [
                           {
-                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/todos-dev-CreateTodo:*:*"
+                            "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/serverless-todo-app-dev-CreateTodo:*:*"
                           }
                         ]
                       },
@@ -1462,7 +1282,7 @@
                         "Action": [
                           "dynamodb:PutItem"
                         ],
-                        "Resource": "arn:aws:dynamodb:us-east-1:*:table/Todos-dev"
+                        "Resource": "arn:aws:dynamodb:us-east-1:*:table/michlin0825-sls-todos-dev"
                       }
                     ]
                   }
@@ -1473,7 +1293,7 @@
                 "Fn::Join": [
                   "-",
                   [
-                    "todos-dev",
+                    "serverless-todo-app-dev",
                     {
                       "Ref": "AWS::Region"
                     },
@@ -1510,7 +1330,7 @@
                     "Fn::Join": [
                       "-",
                       [
-                        "todos-dev",
+                        "serverless-todo-app-dev",
                         "lambda"
                       ]
                     ]
@@ -1526,16 +1346,17 @@
                         ],
                         "Resource": [
                           {
-                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/todos-dev-UpdateTodo:*:*"
+                            "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/serverless-todo-app-dev-UpdateTodo:*:*"
                           }
                         ]
                       },
                       {
                         "Effect": "Allow",
                         "Action": [
-                          "dynamodb:UpdateItem"
+                          "dynamodb:UpdateItem",
+                          "dynamodb:GetItem"
                         ],
-                        "Resource": "arn:aws:dynamodb:us-east-1:*:table/Todos-dev"
+                        "Resource": "arn:aws:dynamodb:us-east-1:*:table/michlin0825-sls-todos-dev"
                       }
                     ]
                   }
@@ -1546,11 +1367,85 @@
                 "Fn::Join": [
                   "-",
                   [
-                    "todos-dev",
+                    "serverless-todo-app-dev",
                     {
                       "Ref": "AWS::Region"
                     },
                     "UpdateTodo",
+                    "lambdaRole"
+                  ]
+                ]
+              },
+              "ManagedPolicyArns": []
+            }
+          },
+          "DeleteTodoIamRoleLambdaExecution": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+              "AssumeRolePolicyDocument": {
+                "Version": "2012-10-17",
+                "Statement": [
+                  {
+                    "Effect": "Allow",
+                    "Principal": {
+                      "Service": [
+                        "lambda.amazonaws.com"
+                      ]
+                    },
+                    "Action": [
+                      "sts:AssumeRole"
+                    ]
+                  }
+                ]
+              },
+              "Policies": [
+                {
+                  "PolicyName": {
+                    "Fn::Join": [
+                      "-",
+                      [
+                        "serverless-todo-app-dev",
+                        "lambda"
+                      ]
+                    ]
+                  },
+                  "PolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                      {
+                        "Effect": "Allow",
+                        "Action": [
+                          "logs:CreateLogStream",
+                          "logs:PutLogEvents"
+                        ],
+                        "Resource": [
+                          {
+                            "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/serverless-todo-app-dev-DeleteTodo:*:*"
+                          }
+                        ]
+                      },
+                      {
+                        "Effect": "Allow",
+                        "Action": [
+                          "dynamodb:DeleteItem",
+                          "dynamodb:GetItem"
+                        ],
+                        "Resource": "arn:aws:dynamodb:us-east-1:*:table/michlin0825-sls-todos-dev"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "Path": "/",
+              "RoleName": {
+                "Fn::Join": [
+                  "-",
+                  [
+                    "serverless-todo-app-dev",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    "DeleteTodo",
                     "lambdaRole"
                   ]
                 ]
@@ -1583,7 +1478,7 @@
                     "Fn::Join": [
                       "-",
                       [
-                        "todos-dev",
+                        "serverless-todo-app-dev",
                         "lambda"
                       ]
                     ]
@@ -1599,16 +1494,9 @@
                         ],
                         "Resource": [
                           {
-                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/todos-dev-GenerateUploadUrl:*:*"
+                            "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/serverless-todo-app-dev-GenerateUploadUrl:*:*"
                           }
                         ]
-                      },
-                      {
-                        "Effect": "Allow",
-                        "Action": [
-                          "dynamodb:UpdateItem"
-                        ],
-                        "Resource": "arn:aws:dynamodb:us-east-1:*:table/Todos-dev"
                       },
                       {
                         "Effect": "Allow",
@@ -1616,7 +1504,7 @@
                           "s3:PutObject",
                           "s3:GetObject"
                         ],
-                        "Resource": "arn:aws:s3:::michlin0825-udacity-todos-dev/*"
+                        "Resource": "arn:aws:s3:::michlin0825-sls-todos-dev/*"
                       }
                     ]
                   }
@@ -1627,7 +1515,7 @@
                 "Fn::Join": [
                   "-",
                   [
-                    "todos-dev",
+                    "serverless-todo-app-dev",
                     {
                       "Ref": "AWS::Region"
                     },
@@ -1637,6 +1525,20 @@
                 ]
               },
               "ManagedPolicyArns": []
+            }
+          },
+          "GatewayResponseDefault4XX": {
+            "Type": "AWS::ApiGateway::GatewayResponse",
+            "Properties": {
+              "ResponseParameters": {
+                "gatewayresponse.header.Access-Control-Allow-Origin": "'*'",
+                "gatewayresponse.header.Access-Control-Allow-Headers": "'Content-Type, X-Amz-Date,Authorization'",
+                "gatewayresponse.header.Access-Control-Allow-Methods": "'GET,OPTIONS,POST'"
+              },
+              "ResponseType": "DEFAULT_4XX",
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
             }
           },
           "RequestBodyValidator": {
@@ -1650,77 +1552,102 @@
               "ValidateRequestParameters": false
             }
           },
-          "GatewayResponseDefault4XX": {
-            "Type": "AWS::ApiGateway::GatewayResponse",
-            "Properties": {
-              "ResponseParameters": {
-                "gatewayresponse.header.Access-Control-Allow-Origin": "'*'",
-                "gatewayresponse.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization'",
-                "gatewayresponse.header.Access-Control-Allow-Methods": "'GET,OPTIONS,POST'"
-              },
-              "ResponseType": "DEFAULT_4XX",
-              "RestApiId": {
-                "Ref": "ApiGatewayRestApi"
-              }
-            }
-          },
-          "TodoDynamoDbTable": {
+          "TodoTable": {
             "Type": "AWS::DynamoDB::Table",
             "Properties": {
               "AttributeDefinitions": [
                 {
-                  "AttributeName": "todoId",
+                  "AttributeName": "userId",
                   "AttributeType": "S"
                 },
                 {
-                  "AttributeName": "userId",
+                  "AttributeName": "createdAt",
+                  "AttributeType": "S"
+                },
+                {
+                  "AttributeName": "todoId",
                   "AttributeType": "S"
                 }
               ],
               "KeySchema": [
                 {
-                  "AttributeName": "todoId",
+                  "AttributeName": "userId",
                   "KeyType": "HASH"
+                },
+                {
+                  "AttributeName": "todoId",
+                  "KeyType": "RANGE"
                 }
               ],
-              "GlobalSecondaryIndexes": [
+              "BillingMode": "PAY_PER_REQUEST",
+              "TableName": "michlin0825-sls-todos-dev",
+              "LocalSecondaryIndexes": [
                 {
-                  "IndexName": "userId",
+                  "IndexName": "UserIdIndex",
                   "KeySchema": [
                     {
                       "AttributeName": "userId",
                       "KeyType": "HASH"
+                    },
+                    {
+                      "AttributeName": "createdAt",
+                      "KeyType": "RANGE"
                     }
                   ],
                   "Projection": {
                     "ProjectionType": "ALL"
                   }
                 }
-              ],
-              "BillingMode": "PAY_PER_REQUEST",
-              "TableName": "Todos-dev"
+              ]
             }
           },
-          "TodoBucket": {
+          "AttachmentBucket": {
             "Type": "AWS::S3::Bucket",
             "Properties": {
-              "BucketName": "michlin0825-udacity-todos-dev",
+              "BucketName": "michlin0825-sls-todos-dev",
               "CorsConfiguration": {
                 "CorsRules": [
                   {
+                    "AllowedOrigins": [
+                      "*"
+                    ],
                     "AllowedHeaders": [
                       "*"
                     ],
                     "AllowedMethods": [
                       "GET",
+                      "PUT",
                       "POST",
-                      "PUT"
+                      "DELETE",
+                      "HEAD"
                     ],
-                    "AllowedOrigins": [
-                      "*"
-                    ]
+                    "MaxAge": 3000
                   }
                 ]
+              }
+            }
+          },
+          "BucketPolicy": {
+            "Type": "AWS::S3::BucketPolicy",
+            "Properties": {
+              "PolicyDocument": {
+                "Id": "Policy",
+                "Version": "2012-10-17",
+                "Statement": [
+                  {
+                    "Sid": "PublicReadWriteBucketPolicy",
+                    "Effect": "Allow",
+                    "Principal": "*",
+                    "Action": [
+                      "s3:GetObject",
+                      "s3:PutObject"
+                    ],
+                    "Resource": "arn:aws:s3:::michlin0825-sls-todos-dev/*"
+                  }
+                ]
+              },
+              "Bucket": {
+                "Ref": "AttachmentBucket"
               }
             }
           }
@@ -1734,37 +1661,37 @@
           "AuthLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "AuthLambdaVersionfLaeeIAlwnVA3RHRufktZ6Ktsr8RP4IsfQjatBXU"
+              "Ref": "AuthLambdaVersionpyB1jV1MD6hgWmu2r1viLFu4oRGReWeey2j2FjRIDbQ"
             }
           },
           "GetTodosLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "GetTodosLambdaVersionFyR8aCF3cLG7hPsQ2cU4WXrWcta498pKXHqhDHgLFP8"
-            }
-          },
-          "DeleteTodoLambdaFunctionQualifiedArn": {
-            "Description": "Current Lambda function version",
-            "Value": {
-              "Ref": "DeleteTodoLambdaVersionwQlY4pTQIiKDj3uzJKwtz96SCLvCFPoAOelWOe9VYts"
+              "Ref": "GetTodosLambdaVersionV1HCCtrmwb3FnCcVKNdJDGl9JinoLHjkxp6C0SSUhw"
             }
           },
           "CreateTodoLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "CreateTodoLambdaVersion5koZMWQqJ5kkktSV6fMHEMDZDI7TOOe9Y2OTK6Z49w"
+              "Ref": "CreateTodoLambdaVersionEMdC0nw28uFZL4HFv3zmuCkM8hQ6CJWwSSCZQe0"
             }
           },
           "UpdateTodoLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "UpdateTodoLambdaVersionvmgjzpzk3vftvVQmK3lDRcmqYIBEwpzw98XkmYVb7g"
+              "Ref": "UpdateTodoLambdaVersionKRtfpj1Q1s29otabi4DNZ7JVsJjMxHQUm4kE6Oacz8"
+            }
+          },
+          "DeleteTodoLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "DeleteTodoLambdaVersion4pGpolQiWUt4Y01sPnTycrvUtaZeLD8x40H72yaxp8"
             }
           },
           "GenerateUploadUrlLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "GenerateUploadUrlLambdaVersion3XCkmsQQmuYsJnQ03isrWL3DS1uyQG3Hw6UnGxQ"
+              "Ref": "GenerateUploadUrlLambdaVersion8OKzQC5cjdFMoOJkXL4adzet42ztNrYp8fvKVMaID2Y"
             }
           },
           "ServiceEndpoint": {
@@ -1788,12 +1715,6 @@
                   "/dev"
                 ]
               ]
-            }
-          },
-          "AwsDocApiId": {
-            "Description": "API ID",
-            "Value": {
-              "$ref": "$[\"service\"][\"provider\"][\"compiledCloudFormationTemplate\"][\"Resources\"][\"CreateTodoModel\"][\"Properties\"][\"RestApiId\"]"
             }
           }
         }
@@ -1868,36 +1789,50 @@
       "vpc": {}
     },
     "custom": {
-      "webpack": {
-        "webpackConfig": "./webpack.config.js",
-        "includeModules": true,
-        "packagerOptions": {
-          "scripts": [
-            "rm -rf node_modules/aws-sdk"
-          ]
-        }
+      "dynamodb": {
+        "start": {
+          "migrate": true,
+          "inMemory": true
+        },
+        "stages": [
+          "dev"
+        ]
       },
       "documentation": {
         "api": {
           "info": {
             "version": "v1.0.0",
-            "title": "ToDos API",
-            "description": "serverless api for ToDo application"
+            "title": "Todo API",
+            "description": "Serverless App For Todo Sharing"
           }
         },
         "models": [
           {
-            "name": "CreateTodo",
+            "name": "TodoRequest",
             "contentType": "application/json",
             "schema": {
-              "$ref": "$[\"service\"][\"provider\"][\"compiledCloudFormationTemplate\"][\"Resources\"][\"CreateTodoModel\"][\"Properties\"][\"Schema\"]"
-            }
-          },
-          {
-            "name": "UpdateTodo",
-            "contentType": "application/json",
-            "schema": {
-              "$ref": "$[\"service\"][\"provider\"][\"compiledCloudFormationTemplate\"][\"Resources\"][\"UpdateTodoModel\"][\"Properties\"][\"Schema\"]"
+              "$schema": "http://json-schema.org/draft-04/schema#",
+              "title": "group",
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "dueDate": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name",
+                "dueDate"
+              ],
+              "additionalProperties": {
+                "properties": {
+                  "attachmentUrl": {
+                    "type": "string"
+                  }
+                }
+              }
             }
           }
         ]
@@ -1905,24 +1840,25 @@
     },
     "plugins": [
       "serverless-webpack",
-      "serverless-aws-documentation",
+      "serverless-iam-roles-per-function",
       "serverless-reqvalidator-plugin",
-      "serverless-iam-roles-per-function"
+      "serverless-dynamodb-local",
+      "serverless-offline"
     ],
     "pluginsData": {},
     "functions": {
       "Auth": {
         "handler": "src/lambda/auth/auth0Authorizer.handler",
         "events": [],
-        "name": "todos-dev-Auth",
+        "name": "serverless-todo-app-dev-Auth",
         "package": {
-          "artifact": ".serverless/Auth.zip"
+          "artifact": ".serverless/serverless-todo-app.zip"
         },
         "memory": 1024,
         "timeout": 6,
         "runtime": "nodejs12.x",
         "vpc": {},
-        "versionLogicalId": "AuthLambdaVersionfLaeeIAlwnVA3RHRufktZ6Ktsr8RP4IsfQjatBXU"
+        "versionLogicalId": "AuthLambdaVersionpyB1jV1MD6hgWmu2r1viLFu4oRGReWeey2j2FjRIDbQ"
       },
       "GetTodos": {
         "handler": "src/lambda/http/getTodos.handler",
@@ -1931,14 +1867,6 @@
             "http": {
               "method": "get",
               "path": "todos",
-              "authorizer": {
-                "name": "Auth",
-                "arn": {
-                  "$ref": "$[\"service\"][\"provider\"][\"compiledCloudFormationTemplate\"][\"Resources\"][\"AuthLambdaPermissionApiGateway\"][\"Properties\"][\"FunctionName\"]"
-                },
-                "managedExternally": false,
-                "identitySource": "method.request.header.Authorization"
-              },
               "cors": {
                 "origins": [
                   "*"
@@ -1958,6 +1886,14 @@
                 ],
                 "allowCredentials": false
               },
+              "authorizer": {
+                "name": "Auth",
+                "arn": {
+                  "$ref": "$[\"service\"][\"provider\"][\"compiledCloudFormationTemplate\"][\"Resources\"][\"AuthLambdaPermissionApiGateway\"][\"Properties\"][\"FunctionName\"]"
+                },
+                "managedExternally": false,
+                "identitySource": "method.request.header.Authorization"
+              },
               "integration": "AWS_PROXY"
             }
           }
@@ -1970,71 +1906,15 @@
             "$ref": "$[\"service\"][\"provider\"][\"compiledCloudFormationTemplate\"][\"Resources\"][\"GetTodosIamRoleLambdaExecution\"][\"Properties\"][\"Policies\"][0][\"PolicyDocument\"][\"Statement\"][2]"
           }
         ],
-        "name": "todos-dev-GetTodos",
+        "name": "serverless-todo-app-dev-GetTodos",
         "package": {
-          "artifact": ".serverless/GetTodos.zip"
+          "artifact": ".serverless/serverless-todo-app.zip"
         },
         "memory": 1024,
         "timeout": 6,
         "runtime": "nodejs12.x",
         "vpc": {},
-        "versionLogicalId": "GetTodosLambdaVersionFyR8aCF3cLG7hPsQ2cU4WXrWcta498pKXHqhDHgLFP8"
-      },
-      "DeleteTodo": {
-        "handler": "src/lambda/http/deleteTodo.handler",
-        "events": [
-          {
-            "http": {
-              "method": "delete",
-              "path": "todos/{todoId}",
-              "authorizer": {
-                "name": "Auth",
-                "arn": {
-                  "Fn::GetAtt": [
-                    "AuthLambdaFunction",
-                    "Arn"
-                  ]
-                },
-                "managedExternally": false,
-                "identitySource": "method.request.header.Authorization"
-              },
-              "cors": {
-                "origins": [
-                  "*"
-                ],
-                "origin": "*",
-                "methods": [
-                  "OPTIONS",
-                  "DELETE"
-                ],
-                "headers": [
-                  "Content-Type",
-                  "X-Amz-Date",
-                  "Authorization",
-                  "X-Api-Key",
-                  "X-Amz-Security-Token",
-                  "X-Amz-User-Agent"
-                ],
-                "allowCredentials": false
-              },
-              "integration": "AWS_PROXY"
-            }
-          }
-        ],
-        "iamRoleStatements": [
-          {
-            "$ref": "$[\"service\"][\"provider\"][\"compiledCloudFormationTemplate\"][\"Resources\"][\"DeleteTodoIamRoleLambdaExecution\"][\"Properties\"][\"Policies\"][0][\"PolicyDocument\"][\"Statement\"][1]"
-          }
-        ],
-        "name": "todos-dev-DeleteTodo",
-        "package": {
-          "artifact": ".serverless/DeleteTodo.zip"
-        },
-        "memory": 1024,
-        "timeout": 6,
-        "runtime": "nodejs12.x",
-        "vpc": {},
-        "versionLogicalId": "DeleteTodoLambdaVersionwQlY4pTQIiKDj3uzJKwtz96SCLvCFPoAOelWOe9VYts"
+        "versionLogicalId": "GetTodosLambdaVersionV1HCCtrmwb3FnCcVKNdJDGl9JinoLHjkxp6C0SSUhw"
       },
       "CreateTodo": {
         "handler": "src/lambda/http/createTodo.handler",
@@ -2043,17 +1923,6 @@
             "http": {
               "method": "post",
               "path": "todos",
-              "authorizer": {
-                "name": "Auth",
-                "arn": {
-                  "Fn::GetAtt": [
-                    "AuthLambdaFunction",
-                    "Arn"
-                  ]
-                },
-                "managedExternally": false,
-                "identitySource": "method.request.header.Authorization"
-              },
               "cors": {
                 "origins": [
                   "*"
@@ -2073,40 +1942,6 @@
                 ],
                 "allowCredentials": false
               },
-              "reqValidatorName": "RequestBodyValidator",
-              "documentation": {
-                "summary": "create new ToDo",
-                "description": "create new ToDo",
-                "requestModels": {
-                  "$ref": "$[\"service\"][\"provider\"][\"compiledCloudFormationTemplate\"][\"Resources\"][\"ApiGatewayMethodTodosPost\"][\"Properties\"][\"RequestModels\"]"
-                }
-              },
-              "integration": "AWS_PROXY"
-            }
-          }
-        ],
-        "iamRoleStatements": [
-          {
-            "$ref": "$[\"service\"][\"provider\"][\"compiledCloudFormationTemplate\"][\"Resources\"][\"CreateTodoIamRoleLambdaExecution\"][\"Properties\"][\"Policies\"][0][\"PolicyDocument\"][\"Statement\"][1]"
-          }
-        ],
-        "name": "todos-dev-CreateTodo",
-        "package": {
-          "artifact": ".serverless/CreateTodo.zip"
-        },
-        "memory": 1024,
-        "timeout": 6,
-        "runtime": "nodejs12.x",
-        "vpc": {},
-        "versionLogicalId": "CreateTodoLambdaVersion5koZMWQqJ5kkktSV6fMHEMDZDI7TOOe9Y2OTK6Z49w"
-      },
-      "UpdateTodo": {
-        "handler": "src/lambda/http/updateTodo.handler",
-        "events": [
-          {
-            "http": {
-              "method": "patch",
-              "path": "todos/{todoId}",
               "authorizer": {
                 "name": "Auth",
                 "arn": {
@@ -2118,6 +1953,40 @@
                 "managedExternally": false,
                 "identitySource": "method.request.header.Authorization"
               },
+              "reqValidatorName": "RequestBodyValidator",
+              "documentation": {
+                "summary": "Create a new group",
+                "description": "create a new group",
+                "requestModels": {
+                  "application/json": "TodoRequest"
+                }
+              },
+              "integration": "AWS_PROXY"
+            }
+          }
+        ],
+        "iamRoleStatements": [
+          {
+            "$ref": "$[\"service\"][\"provider\"][\"compiledCloudFormationTemplate\"][\"Resources\"][\"CreateTodoIamRoleLambdaExecution\"][\"Properties\"][\"Policies\"][0][\"PolicyDocument\"][\"Statement\"][1]"
+          }
+        ],
+        "name": "serverless-todo-app-dev-CreateTodo",
+        "package": {
+          "artifact": ".serverless/serverless-todo-app.zip"
+        },
+        "memory": 1024,
+        "timeout": 6,
+        "runtime": "nodejs12.x",
+        "vpc": {},
+        "versionLogicalId": "CreateTodoLambdaVersionEMdC0nw28uFZL4HFv3zmuCkM8hQ6CJWwSSCZQe0"
+      },
+      "UpdateTodo": {
+        "handler": "src/lambda/http/updateTodo.handler",
+        "events": [
+          {
+            "http": {
+              "method": "patch",
+              "path": "todos/{todoId}",
               "cors": {
                 "origins": [
                   "*"
@@ -2137,40 +2006,6 @@
                 ],
                 "allowCredentials": false
               },
-              "reqValidatorName": "RequestBodyValidator",
-              "documentation": {
-                "summary": "update a ToDo",
-                "description": "update a ToDo",
-                "requestModels": {
-                  "$ref": "$[\"service\"][\"provider\"][\"compiledCloudFormationTemplate\"][\"Resources\"][\"ApiGatewayMethodTodosTodoidVarPatch\"][\"Properties\"][\"RequestModels\"]"
-                }
-              },
-              "integration": "AWS_PROXY"
-            }
-          }
-        ],
-        "iamRoleStatements": [
-          {
-            "$ref": "$[\"service\"][\"provider\"][\"compiledCloudFormationTemplate\"][\"Resources\"][\"UpdateTodoIamRoleLambdaExecution\"][\"Properties\"][\"Policies\"][0][\"PolicyDocument\"][\"Statement\"][1]"
-          }
-        ],
-        "name": "todos-dev-UpdateTodo",
-        "package": {
-          "artifact": ".serverless/UpdateTodo.zip"
-        },
-        "memory": 1024,
-        "timeout": 6,
-        "runtime": "nodejs12.x",
-        "vpc": {},
-        "versionLogicalId": "UpdateTodoLambdaVersionvmgjzpzk3vftvVQmK3lDRcmqYIBEwpzw98XkmYVb7g"
-      },
-      "GenerateUploadUrl": {
-        "handler": "src/lambda/http/generateUploadUrl.handler",
-        "events": [
-          {
-            "http": {
-              "method": "post",
-              "path": "todos/{todoId}/attachment",
               "authorizer": {
                 "name": "Auth",
                 "arn": {
@@ -2182,6 +2017,88 @@
                 "managedExternally": false,
                 "identitySource": "method.request.header.Authorization"
               },
+              "integration": "AWS_PROXY"
+            }
+          }
+        ],
+        "iamRoleStatements": [
+          {
+            "$ref": "$[\"service\"][\"provider\"][\"compiledCloudFormationTemplate\"][\"Resources\"][\"UpdateTodoIamRoleLambdaExecution\"][\"Properties\"][\"Policies\"][0][\"PolicyDocument\"][\"Statement\"][1]"
+          }
+        ],
+        "name": "serverless-todo-app-dev-UpdateTodo",
+        "package": {
+          "artifact": ".serverless/serverless-todo-app.zip"
+        },
+        "memory": 1024,
+        "timeout": 6,
+        "runtime": "nodejs12.x",
+        "vpc": {},
+        "versionLogicalId": "UpdateTodoLambdaVersionKRtfpj1Q1s29otabi4DNZ7JVsJjMxHQUm4kE6Oacz8"
+      },
+      "DeleteTodo": {
+        "handler": "src/lambda/http/deleteTodo.handler",
+        "events": [
+          {
+            "http": {
+              "method": "delete",
+              "path": "todos/{todoId}",
+              "cors": {
+                "origins": [
+                  "*"
+                ],
+                "origin": "*",
+                "methods": [
+                  "OPTIONS",
+                  "DELETE"
+                ],
+                "headers": [
+                  "Content-Type",
+                  "X-Amz-Date",
+                  "Authorization",
+                  "X-Api-Key",
+                  "X-Amz-Security-Token",
+                  "X-Amz-User-Agent"
+                ],
+                "allowCredentials": false
+              },
+              "authorizer": {
+                "name": "Auth",
+                "arn": {
+                  "Fn::GetAtt": [
+                    "AuthLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "managedExternally": false,
+                "identitySource": "method.request.header.Authorization"
+              },
+              "integration": "AWS_PROXY"
+            }
+          }
+        ],
+        "iamRoleStatements": [
+          {
+            "$ref": "$[\"service\"][\"provider\"][\"compiledCloudFormationTemplate\"][\"Resources\"][\"DeleteTodoIamRoleLambdaExecution\"][\"Properties\"][\"Policies\"][0][\"PolicyDocument\"][\"Statement\"][1]"
+          }
+        ],
+        "name": "serverless-todo-app-dev-DeleteTodo",
+        "package": {
+          "artifact": ".serverless/serverless-todo-app.zip"
+        },
+        "memory": 1024,
+        "timeout": 6,
+        "runtime": "nodejs12.x",
+        "vpc": {},
+        "versionLogicalId": "DeleteTodoLambdaVersion4pGpolQiWUt4Y01sPnTycrvUtaZeLD8x40H72yaxp8"
+      },
+      "GenerateUploadUrl": {
+        "handler": "src/lambda/http/generateUploadUrl.handler",
+        "events": [
+          {
+            "http": {
+              "method": "post",
+              "path": "todos/{todoId}/attachment",
               "cors": {
                 "origins": [
                   "*"
@@ -2201,6 +2118,17 @@
                 ],
                 "allowCredentials": false
               },
+              "authorizer": {
+                "name": "Auth",
+                "arn": {
+                  "Fn::GetAtt": [
+                    "AuthLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "managedExternally": false,
+                "identitySource": "method.request.header.Authorization"
+              },
               "integration": "AWS_PROXY"
             }
           }
@@ -2208,24 +2136,35 @@
         "iamRoleStatements": [
           {
             "$ref": "$[\"service\"][\"provider\"][\"compiledCloudFormationTemplate\"][\"Resources\"][\"GenerateUploadUrlIamRoleLambdaExecution\"][\"Properties\"][\"Policies\"][0][\"PolicyDocument\"][\"Statement\"][1]"
-          },
-          {
-            "$ref": "$[\"service\"][\"provider\"][\"compiledCloudFormationTemplate\"][\"Resources\"][\"GenerateUploadUrlIamRoleLambdaExecution\"][\"Properties\"][\"Policies\"][0][\"PolicyDocument\"][\"Statement\"][2]"
           }
         ],
-        "name": "todos-dev-GenerateUploadUrl",
+        "name": "serverless-todo-app-dev-GenerateUploadUrl",
         "package": {
-          "artifact": ".serverless/GenerateUploadUrl.zip"
+          "artifact": ".serverless/serverless-todo-app.zip"
         },
         "memory": 1024,
         "timeout": 6,
         "runtime": "nodejs12.x",
         "vpc": {},
-        "versionLogicalId": "GenerateUploadUrlLambdaVersion3XCkmsQQmuYsJnQ03isrWL3DS1uyQG3Hw6UnGxQ"
+        "versionLogicalId": "GenerateUploadUrlLambdaVersion8OKzQC5cjdFMoOJkXL4adzet42ztNrYp8fvKVMaID2Y"
       }
     },
     "resources": {
       "Resources": {
+        "GatewayResponseDefault4XX": {
+          "Type": "AWS::ApiGateway::GatewayResponse",
+          "Properties": {
+            "ResponseParameters": {
+              "gatewayresponse.header.Access-Control-Allow-Origin": "'*'",
+              "gatewayresponse.header.Access-Control-Allow-Headers": "'Content-Type, X-Amz-Date,Authorization'",
+              "gatewayresponse.header.Access-Control-Allow-Methods": "'GET,OPTIONS,POST'"
+            },
+            "ResponseType": "DEFAULT_4XX",
+            "RestApiId": {
+              "Ref": "ApiGatewayRestApi"
+            }
+          }
+        },
         "RequestBodyValidator": {
           "Type": "AWS::ApiGateway::RequestValidator",
           "Properties": {
@@ -2237,77 +2176,102 @@
             "ValidateRequestParameters": false
           }
         },
-        "GatewayResponseDefault4XX": {
-          "Type": "AWS::ApiGateway::GatewayResponse",
-          "Properties": {
-            "ResponseParameters": {
-              "gatewayresponse.header.Access-Control-Allow-Origin": "'*'",
-              "gatewayresponse.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization'",
-              "gatewayresponse.header.Access-Control-Allow-Methods": "'GET,OPTIONS,POST'"
-            },
-            "ResponseType": "DEFAULT_4XX",
-            "RestApiId": {
-              "Ref": "ApiGatewayRestApi"
-            }
-          }
-        },
-        "TodoDynamoDbTable": {
+        "TodoTable": {
           "Type": "AWS::DynamoDB::Table",
           "Properties": {
             "AttributeDefinitions": [
               {
-                "AttributeName": "todoId",
+                "AttributeName": "userId",
                 "AttributeType": "S"
               },
               {
-                "AttributeName": "userId",
+                "AttributeName": "createdAt",
+                "AttributeType": "S"
+              },
+              {
+                "AttributeName": "todoId",
                 "AttributeType": "S"
               }
             ],
             "KeySchema": [
               {
-                "AttributeName": "todoId",
+                "AttributeName": "userId",
                 "KeyType": "HASH"
+              },
+              {
+                "AttributeName": "todoId",
+                "KeyType": "RANGE"
               }
             ],
-            "GlobalSecondaryIndexes": [
+            "BillingMode": "PAY_PER_REQUEST",
+            "TableName": "michlin0825-sls-todos-dev",
+            "LocalSecondaryIndexes": [
               {
-                "IndexName": "userId",
+                "IndexName": "UserIdIndex",
                 "KeySchema": [
                   {
                     "AttributeName": "userId",
                     "KeyType": "HASH"
+                  },
+                  {
+                    "AttributeName": "createdAt",
+                    "KeyType": "RANGE"
                   }
                 ],
                 "Projection": {
                   "ProjectionType": "ALL"
                 }
               }
-            ],
-            "BillingMode": "PAY_PER_REQUEST",
-            "TableName": "Todos-dev"
+            ]
           }
         },
-        "TodoBucket": {
+        "AttachmentBucket": {
           "Type": "AWS::S3::Bucket",
           "Properties": {
-            "BucketName": "michlin0825-udacity-todos-dev",
+            "BucketName": "michlin0825-sls-todos-dev",
             "CorsConfiguration": {
               "CorsRules": [
                 {
+                  "AllowedOrigins": [
+                    "*"
+                  ],
                   "AllowedHeaders": [
                     "*"
                   ],
                   "AllowedMethods": [
                     "GET",
+                    "PUT",
                     "POST",
-                    "PUT"
+                    "DELETE",
+                    "HEAD"
                   ],
-                  "AllowedOrigins": [
-                    "*"
-                  ]
+                  "MaxAge": 3000
                 }
               ]
+            }
+          }
+        },
+        "BucketPolicy": {
+          "Type": "AWS::S3::BucketPolicy",
+          "Properties": {
+            "PolicyDocument": {
+              "Id": "Policy",
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Sid": "PublicReadWriteBucketPolicy",
+                  "Effect": "Allow",
+                  "Principal": "*",
+                  "Action": [
+                    "s3:GetObject",
+                    "s3:PutObject"
+                  ],
+                  "Resource": "arn:aws:s3:::michlin0825-sls-todos-dev/*"
+                }
+              ]
+            },
+            "Bucket": {
+              "Ref": "AttachmentBucket"
             }
           }
         }
@@ -2319,8 +2283,7 @@
     "isDashboardMonitoringPreconfigured": false
   },
   "package": {
-    "individually": true,
-    "artifactDirectoryName": "serverless/todos/dev/1585241449972-2020-03-26T16:50:49.972Z",
+    "artifactDirectoryName": "serverless/serverless-todo-app/dev/1585277703531-2020-03-27T02:55:03.531Z",
     "artifact": ""
   }
 }
